@@ -7,10 +7,13 @@ namespace PlannerCore
     {
         [Key]
         public int EventId { get; set; }
+        [Required]
         public string Name { get; set; }
         public string? Body { get; set; }
+        [Required]
         public DateTime EventStartDateTime { get; set; }
-        public DateTime NotificationDateTime { get; set; } = new();
+        [Required]
+        public DateTime NotificationDateTime { get; set; }
         public DateTime CreatedDateTime { get; set; }
         public DateTime ModifiedDateTime { get; set; }
 
