@@ -17,7 +17,7 @@ namespace PlannerCore
         public MainDbContext()
         {
             connectionString = GetConnectionString();
-            //Database.EnsureCreated();
+            Database.EnsureCreated();
         }
 
         private string GetConnectionString()
@@ -48,8 +48,8 @@ namespace PlannerCore
         {
             var entries = ChangeTracker
                 .Entries()
-                .Where(e => e.Entity is PlannedEvent && (
-                e.State == EntityState.Added
+                .Where(e => e.Entity is PlannedEvent 
+                && (e.State == EntityState.Added
                 || e.State == EntityState.Modified));
 
             foreach (var entityEntry in entries)
