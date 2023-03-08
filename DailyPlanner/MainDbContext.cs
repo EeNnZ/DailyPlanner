@@ -11,23 +11,31 @@ namespace PlannerCore
 {
     public class MainDbContext : DbContext
     {
-        readonly string connectionString;
+        readonly string _connectionString;
         public DbSet<PlannedEvent> PlannedEvents { get; set; }
         public DbContextOptions? DbContextOptions { get; set; }
+        public IConfigurationRoot Configuration { get; private set; }
         public MainDbContext()
         {
-            connectionString = GetConnectionString();
+            Configuration = SetupJsonConfig();
+            _connectionString = GetConnectionString();
             Database.EnsureCreated();
         }
 
-        private string GetConnectionString()
+        private IConfigurationRoot SetupJsonConfig()
         {
             var builder = new ConfigurationBuilder();
             string debugDir = Directory.GetCurrentDirectory();
             builder.SetBasePath(debugDir);
             builder.AddJsonFile("appsettings.json");
             var config = builder.Build();
-            string? connectionString = config.GetConnectionString("DefaultConnection");
+            return config;
+        }
+
+        private string GetConnectionString()
+        {
+            
+            string? connectionString = Configuration.GetConnectionString("DefaultConnection");
             if (connectionString is null)
             {
                 throw new NullReferenceException("Invalid database location, check appsettings.json");
@@ -36,7 +44,7 @@ namespace PlannerCore
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite(connectionString);
+            optionsBuilder.UseSqlite(_connectionString);
             optionsBuilder.LogTo((s) =>
             {
                 Debug.WriteLine(s);

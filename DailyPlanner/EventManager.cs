@@ -12,6 +12,8 @@ namespace DailyPlanner
 {
     public class EventManager
     {
+        //TODO: Timer
+        //TODO: EventManager field
         #region CRUD event 
         public class RecordChangedEventArgs : EventArgs
         {
@@ -26,7 +28,7 @@ namespace DailyPlanner
         }
         #endregion
 
-        #region CRUD 
+        #region CRUD operations
         public void Delete(int eventId)
         {
             using var db = new MainDbContext();
