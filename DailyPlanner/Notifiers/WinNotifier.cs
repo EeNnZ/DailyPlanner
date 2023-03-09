@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Toolkit.Uwp.Notifications;
 using PlannerCore;
 using System;
 using System.Collections.Generic;
@@ -10,18 +11,25 @@ namespace DailyPlanner.Notifiers
 {
     public class WinNotifier : INotifier
     {
-        private readonly NotifyIcon _notifyIcon;
         public readonly IConfigurationRoot Configuration;
-        public WinNotifier(NotifyIcon notifyIcon, IConfigurationRoot configuration)
+        public WinNotifier(IConfigurationRoot configuration)
         {
-            _notifyIcon = notifyIcon;
             Configuration = configuration;
         }
-        //TODO: Use UWP notifications package
         public async Task Notify(PlannedEvent evnt)
         {
-            string tipTitle = $"{evnt.Name} will start at {evnt.EventStartDateTime}";
-            _notifyIcon.ShowBalloonTip(60_000, tipTitle, evnt.Body, ToolTipIcon.Info);
+            string toastTitle = $"{evnt.Name} will start at {evnt.EventStartDateTime}";
+            string toastBody = evnt.Body ?? string.Empty;
+
+            var toast = new ToastContentBuilder()
+                .AddAppLogoOverride(new Uri(Path.Combine(Directory.GetCurrentDirectory(), "ico.ico")), ToastGenericAppLogoCrop.Circle)
+                .AddArgument("eventName", evnt.Name)
+                .AddArgument("eventId", evnt.EventId)
+                .AddText(toastTitle)
+                .AddText(toastBody)
+                .AddButton(new ToastButton().SetContent("Delete event").AddArgument("action", "delete").SetBackgroundActivation())
+                .AddButton(new ToastButton().SetContent("Mark as done").AddArgument("action", "mark")).SetBackgroundActivation();
+            toast.Show();
         }
     }
 }

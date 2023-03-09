@@ -67,6 +67,7 @@ namespace PlannerCore
                 if (entityEntry.State == EntityState.Added)
                 {
                     ((PlannedEvent)entityEntry.Entity).CreatedDateTime = DateTime.Now;
+                    ((PlannedEvent)entityEntry.Entity).IsDone = false;
                 }
             }
             return base.SaveChanges();

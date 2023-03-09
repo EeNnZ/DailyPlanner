@@ -11,6 +11,8 @@ namespace PlannerCore
         public string Name { get; set; }
         public string? Body { get; set; }
         [Required]
+        public bool IsDone { get; set; }
+        [Required]
         public DateTime EventStartDateTime { get; set; }
         [Required]
         public DateTime NotificationDateTime { get; set; }

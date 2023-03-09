@@ -13,7 +13,7 @@ namespace DailyPlanner
     public class EventManager
     {
         //TODO: Timer
-        //TODO: EventManager field
+        //TODO: Notifiers
         #region CRUD event 
         public class RecordChangedEventArgs : EventArgs
         {
