@@ -3,8 +3,18 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PlannerCore
 {
+    [Index(nameof(Name), IsUnique = true)]
     public class PlannedEvent
     {
+        public PlannedEvent(string name, DateTime eventStartDateTime, DateTime notificationDateTime, string? body, bool isDone = false)
+        {
+            Name = name;
+            Body = body;
+            EventStartDateTime = eventStartDateTime;
+            NotificationDateTime = notificationDateTime;
+            IsDone = isDone;
+        }
+
         [Key]
         public int EventId { get; set; }
         [Required]
@@ -16,9 +26,9 @@ namespace PlannerCore
         public DateTime EventStartDateTime { get; set; }
         [Required]
         public DateTime NotificationDateTime { get; set; }
+        [Required]
         public DateTime CreatedDateTime { get; set; }
+        [Required]
         public DateTime ModifiedDateTime { get; set; }
-
-
     }
 }

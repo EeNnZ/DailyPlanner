@@ -35,7 +35,7 @@
             createButton = new Button();
             modifyButton = new Button();
             deleteButton = new Button();
-            button1 = new Button();
+            markAsDoneButton = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
             SuspendLayout();
             // 
@@ -48,12 +48,16 @@
             // dataGridView
             // 
             dataGridView.AllowUserToAddRows = false;
+            dataGridView.AllowUserToDeleteRows = false;
+            dataGridView.BackgroundColor = SystemColors.ButtonFace;
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView.EditMode = DataGridViewEditMode.EditProgrammatically;
             dataGridView.Location = new Point(12, 12);
+            dataGridView.MultiSelect = false;
             dataGridView.Name = "dataGridView";
             dataGridView.RowTemplate.Height = 25;
             dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridView.Size = new Size(547, 246);
+            dataGridView.Size = new Size(547, 287);
             dataGridView.TabIndex = 0;
             // 
             // createButton
@@ -64,6 +68,7 @@
             createButton.TabIndex = 1;
             createButton.Text = "Create";
             createButton.UseVisualStyleBackColor = true;
+            createButton.Click += createButton_Click;
             // 
             // modifyButton
             // 
@@ -73,6 +78,7 @@
             modifyButton.TabIndex = 2;
             modifyButton.Text = "Modify";
             modifyButton.UseVisualStyleBackColor = true;
+            modifyButton.Click += modifyButton_Click;
             // 
             // deleteButton
             // 
@@ -82,22 +88,24 @@
             deleteButton.TabIndex = 3;
             deleteButton.Text = "Delete";
             deleteButton.UseVisualStyleBackColor = true;
+            deleteButton.Click += deleteButton_Click;
             // 
-            // button1
+            // markAsDoneButton
             // 
-            button1.Location = new Point(314, 324);
-            button1.Name = "button1";
-            button1.Size = new Size(94, 23);
-            button1.TabIndex = 4;
-            button1.Text = "Mark as done";
-            button1.UseVisualStyleBackColor = true;
+            markAsDoneButton.Location = new Point(314, 324);
+            markAsDoneButton.Name = "markAsDoneButton";
+            markAsDoneButton.Size = new Size(94, 23);
+            markAsDoneButton.TabIndex = 4;
+            markAsDoneButton.Text = "Mark as done";
+            markAsDoneButton.UseVisualStyleBackColor = true;
+            markAsDoneButton.Click += markAsDoneButton_Click;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(571, 353);
-            Controls.Add(button1);
+            Controls.Add(markAsDoneButton);
             Controls.Add(deleteButton);
             Controls.Add(modifyButton);
             Controls.Add(createButton);
@@ -116,6 +124,6 @@
         private Button createButton;
         private Button modifyButton;
         private Button deleteButton;
-        private Button button1;
+        private Button markAsDoneButton;
     }
 }

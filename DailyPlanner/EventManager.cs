@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
+using Microsoft.Extensions.Logging;
 using PlannerCore;
 using System;
 using System.Collections.Generic;
@@ -29,18 +30,32 @@ namespace DailyPlanner
         #endregion
 
         #region CRUD operations
-        public void Delete(int eventId)
+        private bool Delete(int eventId)
         {
             using var db = new MainDbContext();
             var evnt = db.PlannedEvents?.FirstOrDefault(x => x.EventId == eventId);
             if (evnt is not null)
             {
                 db.PlannedEvents?.Remove(evnt);
+                //ResetIndices(db);
                 db.SaveChanges();
+                OnRecordChanged(new RecordChangedEventArgs(RecordChangedEventArgs.RecordState.Deleted));
+                return true;
             }
-            OnRecordChanged(new RecordChangedEventArgs(RecordChangedEventArgs.RecordState.Deleted));
+            else return false;
         }
-        public void Update(int eventId, PlannedEvent updatedEvent)
+        public bool Delete(string evntName)
+        {
+            using var db = new MainDbContext();
+            var evnt = db.PlannedEvents?.FirstOrDefault(x => x.Name == evntName);
+            if (evnt is null) return false;
+            return Delete(evnt.EventId);
+        }
+        private void ResetSqliteSequence()
+        {
+            //TODO: Reset sqlite sequence???
+        }
+        private void Update(int eventId, PlannedEvent updatedEvent)
         {
             using var db = new MainDbContext();
             var evnt = db.PlannedEvents?.Single(e => e.EventId == eventId);
@@ -50,10 +65,21 @@ namespace DailyPlanner
                 evnt.Body = updatedEvent.Body;
                 evnt.EventStartDateTime = updatedEvent.EventStartDateTime;
                 evnt.NotificationDateTime = updatedEvent.NotificationDateTime;
+                evnt.IsDone = updatedEvent.IsDone;
                 db.PlannedEvents?.Update(evnt);
                 db.SaveChanges();
+                OnRecordChanged(new RecordChangedEventArgs(RecordChangedEventArgs.RecordState.Updated));
             }
-            OnRecordChanged(new RecordChangedEventArgs(RecordChangedEventArgs.RecordState.Updated));
+        }
+        public void Update(string evntName, PlannedEvent updatedEvent)
+        {
+            using var db = new MainDbContext();
+            var evnt = db.PlannedEvents?.Single(e => e.Name == evntName);
+            if (evnt is not null)
+            {
+                Update(evnt.EventId, updatedEvent);
+                OnRecordChanged(new RecordChangedEventArgs(RecordChangedEventArgs.RecordState.Updated));
+            }
         }
         public List<PlannedEvent>? Read()
         {
@@ -61,22 +87,22 @@ namespace DailyPlanner
             var allEvents = db.PlannedEvents?.ToList();
             return allEvents;
         }
-        public void Create(string name, DateTime startDateTime, DateTime notifyDateTime, string? body = "")
+        private void Create(string name, DateTime startDateTime, DateTime notifyDateTime, string? body = "")
         {
-            var newEvent = new PlannedEvent()
-            {
-                Name = name,
-                EventStartDateTime = startDateTime,
-                NotificationDateTime = notifyDateTime,
-                Body = body
-            };
+            var newEvent = new PlannedEvent(name, startDateTime, notifyDateTime, body);
             using var db = new MainDbContext();
-            if(db.PlannedEvents?.Find(name, startDateTime) is null)
+            if(db.PlannedEvents?.FirstOrDefault(e => e.Name == newEvent.Name 
+            && e.EventStartDateTime == newEvent.EventStartDateTime) is null)
             {
                 db.PlannedEvents?.Add(newEvent);
                 db.SaveChanges();
                 OnRecordChanged(new RecordChangedEventArgs(RecordChangedEventArgs.RecordState.Created));
             }
+        }
+        public void Create(PlannedEvent newEvent)
+        {
+            if (newEvent is null) return;
+            Create(newEvent.Name, newEvent.EventStartDateTime, newEvent.NotificationDateTime, newEvent.Body);
         }
         #endregion
 

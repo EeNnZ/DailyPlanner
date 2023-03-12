@@ -29,14 +29,16 @@
         private void InitializeComponent()
         {
             eventGroupBox = new GroupBox();
+            timeNotificationPicker = new DateTimePicker();
+            timeStartPicker = new DateTimePicker();
             bodyLabel = new Label();
             label3 = new Label();
             dateTimeStartLabel = new Label();
             nameLabel = new Label();
             cancelButton = new Button();
             saveButton = new Button();
-            dateTimeNotificationPicker = new DateTimePicker();
-            dateTimeStartPicker = new DateTimePicker();
+            dateNotificationPicker = new DateTimePicker();
+            dateStartPicker = new DateTimePicker();
             bodyTextBox = new TextBox();
             nameTextBox = new TextBox();
             eventGroupBox.SuspendLayout();
@@ -44,14 +46,16 @@
             // 
             // eventGroupBox
             // 
+            eventGroupBox.Controls.Add(timeNotificationPicker);
+            eventGroupBox.Controls.Add(timeStartPicker);
             eventGroupBox.Controls.Add(bodyLabel);
             eventGroupBox.Controls.Add(label3);
             eventGroupBox.Controls.Add(dateTimeStartLabel);
             eventGroupBox.Controls.Add(nameLabel);
             eventGroupBox.Controls.Add(cancelButton);
             eventGroupBox.Controls.Add(saveButton);
-            eventGroupBox.Controls.Add(dateTimeNotificationPicker);
-            eventGroupBox.Controls.Add(dateTimeStartPicker);
+            eventGroupBox.Controls.Add(dateNotificationPicker);
+            eventGroupBox.Controls.Add(dateStartPicker);
             eventGroupBox.Controls.Add(bodyTextBox);
             eventGroupBox.Controls.Add(nameTextBox);
             eventGroupBox.Location = new Point(12, 12);
@@ -60,6 +64,22 @@
             eventGroupBox.TabIndex = 0;
             eventGroupBox.TabStop = false;
             eventGroupBox.Text = "Event";
+            // 
+            // timeNotificationPicker
+            // 
+            timeNotificationPicker.Format = DateTimePickerFormat.Time;
+            timeNotificationPicker.Location = new Point(198, 108);
+            timeNotificationPicker.Name = "timeNotificationPicker";
+            timeNotificationPicker.Size = new Size(94, 23);
+            timeNotificationPicker.TabIndex = 11;
+            // 
+            // timeStartPicker
+            // 
+            timeStartPicker.Format = DateTimePickerFormat.Time;
+            timeStartPicker.Location = new Point(198, 65);
+            timeStartPicker.Name = "timeStartPicker";
+            timeStartPicker.Size = new Size(94, 23);
+            timeStartPicker.TabIndex = 10;
             // 
             // bodyLabel
             // 
@@ -99,6 +119,7 @@
             // 
             // cancelButton
             // 
+            cancelButton.DialogResult = DialogResult.Cancel;
             cancelButton.Location = new Point(248, 281);
             cancelButton.Name = "cancelButton";
             cancelButton.Size = new Size(75, 23);
@@ -108,6 +129,7 @@
             // 
             // saveButton
             // 
+            saveButton.DialogResult = DialogResult.OK;
             saveButton.Location = new Point(167, 281);
             saveButton.Name = "saveButton";
             saveButton.Size = new Size(75, 23);
@@ -115,34 +137,38 @@
             saveButton.Text = "Save";
             saveButton.UseVisualStyleBackColor = true;
             // 
-            // dateTimeNotificationPicker
+            // dateNotificationPicker
             // 
-            dateTimeNotificationPicker.Location = new Point(123, 108);
-            dateTimeNotificationPicker.Name = "dateTimeNotificationPicker";
-            dateTimeNotificationPicker.Size = new Size(200, 23);
-            dateTimeNotificationPicker.TabIndex = 3;
+            dateNotificationPicker.CustomFormat = "";
+            dateNotificationPicker.Format = DateTimePickerFormat.Short;
+            dateNotificationPicker.Location = new Point(88, 108);
+            dateNotificationPicker.Name = "dateNotificationPicker";
+            dateNotificationPicker.Size = new Size(104, 23);
+            dateNotificationPicker.TabIndex = 3;
             // 
-            // dateTimeStartPicker
+            // dateStartPicker
             // 
-            dateTimeStartPicker.CausesValidation = false;
-            dateTimeStartPicker.Location = new Point(123, 65);
-            dateTimeStartPicker.Name = "dateTimeStartPicker";
-            dateTimeStartPicker.Size = new Size(200, 23);
-            dateTimeStartPicker.TabIndex = 2;
+            dateStartPicker.CausesValidation = false;
+            dateStartPicker.CustomFormat = "";
+            dateStartPicker.Format = DateTimePickerFormat.Short;
+            dateStartPicker.Location = new Point(88, 65);
+            dateStartPicker.Name = "dateStartPicker";
+            dateStartPicker.Size = new Size(104, 23);
+            dateStartPicker.TabIndex = 2;
             // 
             // bodyTextBox
             // 
-            bodyTextBox.Location = new Point(123, 151);
+            bodyTextBox.Location = new Point(88, 151);
             bodyTextBox.Multiline = true;
             bodyTextBox.Name = "bodyTextBox";
-            bodyTextBox.Size = new Size(200, 83);
+            bodyTextBox.Size = new Size(204, 83);
             bodyTextBox.TabIndex = 1;
             // 
             // nameTextBox
             // 
-            nameTextBox.Location = new Point(123, 22);
+            nameTextBox.Location = new Point(88, 22);
             nameTextBox.Name = "nameTextBox";
-            nameTextBox.Size = new Size(200, 23);
+            nameTextBox.Size = new Size(204, 23);
             nameTextBox.TabIndex = 0;
             // 
             // EventForm
@@ -166,10 +192,12 @@
         private Label dateTimeStartLabel;
         private Label nameLabel;
         private Button cancelButton;
-        private Button saveButton;
-        private DateTimePicker dateTimeNotificationPicker;
-        private DateTimePicker dateTimeStartPicker;
-        private TextBox bodyTextBox;
-        private TextBox nameTextBox;
+        internal protected DateTimePicker dateNotificationPicker;
+        internal protected DateTimePicker dateStartPicker;
+        internal protected TextBox bodyTextBox;
+        internal protected TextBox nameTextBox;
+        internal protected DateTimePicker timeStartPicker;
+        internal protected DateTimePicker timeNotificationPicker;
+        internal protected Button saveButton;
     }
 }

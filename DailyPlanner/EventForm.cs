@@ -16,5 +16,15 @@ namespace DailyPlanner
         {
             InitializeComponent();
         }
+        public EventForm(string name, DateTime dateStart, DateTime dateNotify, string? body) 
+            : this()
+        {
+            nameTextBox.Text = name;
+            dateStartPicker.Value = dateStart.Date;
+            timeStartPicker.Value = dateStart;
+            dateNotificationPicker.Value = dateNotify.Date;
+            timeNotificationPicker.Value = dateNotify;
+            bodyTextBox.Text = body ?? string.Empty;
+        }
     }
 }
