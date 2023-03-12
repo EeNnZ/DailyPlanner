@@ -67,17 +67,21 @@
             // 
             // timeNotificationPicker
             // 
-            timeNotificationPicker.Format = DateTimePickerFormat.Time;
+            timeNotificationPicker.CustomFormat = "HH:mm tt";
+            timeNotificationPicker.Format = DateTimePickerFormat.Custom;
             timeNotificationPicker.Location = new Point(198, 108);
             timeNotificationPicker.Name = "timeNotificationPicker";
+            timeNotificationPicker.ShowUpDown = true;
             timeNotificationPicker.Size = new Size(94, 23);
             timeNotificationPicker.TabIndex = 11;
             // 
             // timeStartPicker
             // 
-            timeStartPicker.Format = DateTimePickerFormat.Time;
+            timeStartPicker.CustomFormat = "HH:mm tt";
+            timeStartPicker.Format = DateTimePickerFormat.Custom;
             timeStartPicker.Location = new Point(198, 65);
             timeStartPicker.Name = "timeStartPicker";
+            timeStartPicker.ShowUpDown = true;
             timeStartPicker.Size = new Size(94, 23);
             timeStartPicker.TabIndex = 10;
             // 
@@ -120,9 +124,9 @@
             // cancelButton
             // 
             cancelButton.DialogResult = DialogResult.Cancel;
-            cancelButton.Location = new Point(248, 281);
+            cancelButton.Location = new Point(248, 269);
             cancelButton.Name = "cancelButton";
-            cancelButton.Size = new Size(75, 23);
+            cancelButton.Size = new Size(75, 35);
             cancelButton.TabIndex = 5;
             cancelButton.Text = "Cancel";
             cancelButton.UseVisualStyleBackColor = true;
@@ -130,9 +134,9 @@
             // saveButton
             // 
             saveButton.DialogResult = DialogResult.OK;
-            saveButton.Location = new Point(167, 281);
+            saveButton.Location = new Point(167, 269);
             saveButton.Name = "saveButton";
-            saveButton.Size = new Size(75, 23);
+            saveButton.Size = new Size(75, 35);
             saveButton.TabIndex = 4;
             saveButton.Text = "Save";
             saveButton.UseVisualStyleBackColor = true;

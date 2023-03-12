@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -16,7 +17,7 @@ namespace DailyPlanner
         {
             InitializeComponent();
         }
-        public EventForm(string name, DateTime dateStart, DateTime dateNotify, string? body) 
+        public EventForm(string name, DateTime dateStart, DateTime dateNotify, string? body)
             : this()
         {
             nameTextBox.Text = name;
@@ -25,6 +26,15 @@ namespace DailyPlanner
             dateNotificationPicker.Value = dateNotify.Date;
             timeNotificationPicker.Value = dateNotify;
             bodyTextBox.Text = body ?? string.Empty;
+
+            //string timeFormat = "HH:mm tt";
+
+            //timeStartPicker.Format = DateTimePickerFormat.Custom;
+            //timeStartPicker.CustomFormat = timeFormat;
+
+            //timeNotificationPicker.Format = DateTimePickerFormat.Custom;
+            //timeNotificationPicker.CustomFormat = timeFormat;
+
         }
     }
 }

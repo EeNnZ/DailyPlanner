@@ -62,9 +62,9 @@
             // 
             // createButton
             // 
-            createButton.Location = new Point(12, 324);
+            createButton.Location = new Point(12, 315);
             createButton.Name = "createButton";
-            createButton.Size = new Size(94, 23);
+            createButton.Size = new Size(94, 35);
             createButton.TabIndex = 1;
             createButton.Text = "Create";
             createButton.UseVisualStyleBackColor = true;
@@ -72,9 +72,9 @@
             // 
             // modifyButton
             // 
-            modifyButton.Location = new Point(163, 324);
+            modifyButton.Location = new Point(163, 315);
             modifyButton.Name = "modifyButton";
-            modifyButton.Size = new Size(94, 23);
+            modifyButton.Size = new Size(94, 35);
             modifyButton.TabIndex = 2;
             modifyButton.Text = "Modify";
             modifyButton.UseVisualStyleBackColor = true;
@@ -82,9 +82,9 @@
             // 
             // deleteButton
             // 
-            deleteButton.Location = new Point(465, 324);
+            deleteButton.Location = new Point(465, 315);
             deleteButton.Name = "deleteButton";
-            deleteButton.Size = new Size(94, 23);
+            deleteButton.Size = new Size(94, 35);
             deleteButton.TabIndex = 3;
             deleteButton.Text = "Delete";
             deleteButton.UseVisualStyleBackColor = true;
@@ -92,9 +92,9 @@
             // 
             // markAsDoneButton
             // 
-            markAsDoneButton.Location = new Point(314, 324);
+            markAsDoneButton.Location = new Point(314, 315);
             markAsDoneButton.Name = "markAsDoneButton";
-            markAsDoneButton.Size = new Size(94, 23);
+            markAsDoneButton.Size = new Size(94, 35);
             markAsDoneButton.TabIndex = 4;
             markAsDoneButton.Text = "Mark as done";
             markAsDoneButton.UseVisualStyleBackColor = true;
