@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DailyPlanner.Notifiers;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using PlannerCore;
 using System;
@@ -14,7 +16,14 @@ namespace DailyPlanner
     public class EventManager
     {
         //TODO: Timer
-        //TODO: Notifiers
+        public readonly IConfigurationRoot Configuration;
+        private readonly INotifier _notifier;
+
+        public EventManager(IConfigurationRoot configuration)
+        {
+            Configuration = configuration;
+            _notifier = new NotificationManager(Configuration);
+        }
         #region CRUD event 
         public class RecordChangedEventArgs : EventArgs
         {

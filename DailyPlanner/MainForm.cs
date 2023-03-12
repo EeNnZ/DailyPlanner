@@ -8,19 +8,17 @@ namespace DailyPlanner
 {
     public partial class MainForm : Form
     {
-        EventManager _eventManager;
+        private EventManager _eventManager;
         public MainForm()
         {
             InitializeComponent();
-            _eventManager = new EventManager();
+
+            using var context = new MainDbContext();
+            _eventManager = new EventManager(context.Configuration);
             _eventManager.RecordChanged += EventManager_RecordChanged;
+
             LoadDatabaseEntriesToDataGridView();
             dataGridView.Columns["EventId"].Visible = false;
-        }
-
-        private void ToastNotificationManagerCompat_OnActivated(ToastNotificationActivatedEventArgsCompat e)
-        {
-            //TODO: Remove event from database or mark as done via toast notification
         }
         #region CRUD 
         private void createButton_Click(object sender, EventArgs e)
@@ -47,7 +45,6 @@ namespace DailyPlanner
         }
         private void deleteButton_Click(object sender, EventArgs e)
         {
-            //TODO: Delete by name
             if (dataGridView.SelectedRows.Count == 0)
             {
                 MessageBox.Show("Select at least 1 row to delete", "Error", MessageBoxButtons.OK);
@@ -137,6 +134,10 @@ namespace DailyPlanner
             using var context = new MainDbContext();
             context.PlannedEvents.Where(ev => !ev.IsDone).Load();
             dataGridView.DataSource = context.PlannedEvents.Local.ToBindingList();
+        }
+        private void ToastNotificationManagerCompat_OnActivated(ToastNotificationActivatedEventArgsCompat e)
+        {
+            //TODO: Remove event from database or mark as done via toast notification
         }
         protected override void OnLoad(EventArgs e)
         {

@@ -12,10 +12,9 @@ namespace DailyPlanner.Notifiers
 {
     public class EmailNotifier : INotifier
     {
-        private readonly string _addressee;
-
         #region props
         public readonly IConfigurationRoot Configuration;
+        public string Addressee { get; }
         public string SmtpEmail { get; private set; }
         private string SmtpPassword { get; set; }
         public string SmtpServer { get; private set; }
@@ -23,10 +22,10 @@ namespace DailyPlanner.Notifiers
         public bool SmtpUseSsl { get; private set; }
         #endregion
 
-        public EmailNotifier(string addressee, IConfigurationRoot configuration)
+        public EmailNotifier(IConfigurationRoot configuration)
         {
-            _addressee = addressee;
             Configuration = configuration;
+            Addressee = GetAddressee();
             SmtpServer = GetSmtpServer();
             SmtpEmail = GetSmtpEmail();
             SmtpPassword = GetSmtpPassword();
@@ -43,7 +42,7 @@ namespace DailyPlanner.Notifiers
             }
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress(fromName, SmtpEmail));
-            message.To.Add(new MailboxAddress("client", _addressee));
+            message.To.Add(new MailboxAddress("client", Addressee));
             message.Subject = $"Your event \"{evnt.Name}\" will start at {evnt.EventStartDateTime}";
             message.Body = new TextPart(MimeKit.Text.TextFormat.Text) { Text = evnt.Body };
 
@@ -53,6 +52,16 @@ namespace DailyPlanner.Notifiers
             await client.SendAsync(message);
 
             await client.DisconnectAsync(true);
+        }
+
+        private string GetAddressee()
+        {
+            string? addressee = Configuration.GetSection("EmailSettings")["Addressee"];
+            if (string.IsNullOrEmpty(addressee))
+            {
+                throw new NullReferenceException("Cannot obtain addressee email from appsettings.json");
+            }
+            return addressee;
         }
         #region Obtain smtp settings
         private string GetSmtpServer()
