@@ -1,15 +1,8 @@
 ﻿using DailyPlanner.Notifiers;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+using System.Timers;
 using PlannerCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
+using Org.BouncyCastle.Asn1.Sec;
 
 namespace DailyPlanner
 {
@@ -18,12 +11,32 @@ namespace DailyPlanner
         //TODO: Timer
         public readonly IConfigurationRoot Configuration;
         private readonly INotifier _notifier;
+        private List<PlannedEvent> _localEventsCollection;
+        private System.Timers.Timer _timer;
 
         public EventManager(IConfigurationRoot configuration)
         {
             Configuration = configuration;
             _notifier = new NotificationManager(Configuration);
+            _localEventsCollection = new List<PlannedEvent>();
+            _timer = new System.Timers.Timer(5000);
+            _timer.Elapsed += CheckForUpcomingEventsCallback;
+            _timer.Start();
         }
+
+        private void CheckForUpcomingEventsCallback(object? sender, ElapsedEventArgs e)
+        {
+            string dtformat = "MM/dd/yyyy h:mm tt";
+            string now = DateTime.Now.ToString(dtformat);
+            foreach (var evnt in _localEventsCollection)
+            {
+                if (now == evnt.NotificationDateTime.ToString(dtformat))
+                {
+                    Task.Run(async () => await _notifier.Notify(evnt));
+                }
+            }
+        }
+
         #region CRUD event 
         public class RecordChangedEventArgs : EventArgs
         {
@@ -34,6 +47,8 @@ namespace DailyPlanner
         public event EventHandler? RecordChanged;
         protected virtual void OnRecordChanged(RecordChangedEventArgs e)
         {
+            var entries = Read();
+            if (entries is not null) _localEventsCollection = entries;
             RecordChanged?.Invoke(this, e);
         }
         #endregion
@@ -114,6 +129,5 @@ namespace DailyPlanner
             Create(newEvent.Name, newEvent.EventStartDateTime, newEvent.NotificationDateTime, newEvent.Body);
         }
         #endregion
-
     }
 }

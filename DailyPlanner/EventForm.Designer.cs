@@ -67,7 +67,7 @@
             // 
             // timeNotificationPicker
             // 
-            timeNotificationPicker.CustomFormat = "HH:mm tt";
+            timeNotificationPicker.CustomFormat = "h:mm tt";
             timeNotificationPicker.Format = DateTimePickerFormat.Custom;
             timeNotificationPicker.Location = new Point(198, 108);
             timeNotificationPicker.Name = "timeNotificationPicker";
@@ -77,7 +77,7 @@
             // 
             // timeStartPicker
             // 
-            timeStartPicker.CustomFormat = "HH:mm tt";
+            timeStartPicker.CustomFormat = "h:mm tt";
             timeStartPicker.Format = DateTimePickerFormat.Custom;
             timeStartPicker.Location = new Point(198, 65);
             timeStartPicker.Name = "timeStartPicker";
