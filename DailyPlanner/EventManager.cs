@@ -8,7 +8,6 @@ namespace DailyPlanner
 {
     public class EventManager
     {
-        //TODO: Timer
         public readonly IConfigurationRoot Configuration;
         private readonly INotifier _notifier;
         private List<PlannedEvent> _localEventsCollection;
@@ -18,7 +17,8 @@ namespace DailyPlanner
         {
             Configuration = configuration;
             _notifier = new NotificationManager(Configuration);
-            _localEventsCollection = new List<PlannedEvent>();
+            using var context = new MainDbContext();
+            _localEventsCollection = context.PlannedEvents?.ToList() ?? new List<PlannedEvent>();
             _timer = new System.Timers.Timer(5000);
             _timer.Elapsed += CheckForUpcomingEventsCallback;
             _timer.Start();
@@ -26,11 +26,13 @@ namespace DailyPlanner
 
         private void CheckForUpcomingEventsCallback(object? sender, ElapsedEventArgs e)
         {
+            if (_localEventsCollection == null || _localEventsCollection.Count == 0) return;
+
             string dtformat = "MM/dd/yyyy h:mm tt";
             string now = DateTime.Now.ToString(dtformat);
             foreach (var evnt in _localEventsCollection)
             {
-                if (now == evnt.NotificationDateTime.ToString(dtformat))
+                if (now == evnt.NotificationDateTime.ToString(dtformat) && !evnt.IsDone)
                 {
                     Task.Run(async () => await _notifier.Notify(evnt));
                 }
