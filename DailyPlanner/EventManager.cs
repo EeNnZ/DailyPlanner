@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Configuration;
 using System.Timers;
 using PlannerCore;
-using Org.BouncyCastle.Asn1.Sec;
 
 namespace DailyPlanner
 {
@@ -11,7 +10,7 @@ namespace DailyPlanner
         public readonly IConfigurationRoot Configuration;
         private readonly INotifier _notifier;
         private List<PlannedEvent> _localEventsCollection;
-        private System.Timers.Timer _timer;
+        private readonly System.Timers.Timer _timer;
 
         public EventManager(IConfigurationRoot configuration)
         {
@@ -34,7 +33,7 @@ namespace DailyPlanner
             {
                 if (now == evnt.NotificationDateTime.ToString(dtformat) && !evnt.IsDone)
                 {
-                    Task.Run(async () => await _notifier.Notify(evnt));
+                    _notifier.Notify(evnt);
                 }
             }
         }

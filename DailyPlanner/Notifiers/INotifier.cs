@@ -9,6 +9,6 @@ namespace DailyPlanner.Notifiers
 {
     public interface INotifier
     {
-        Task Notify(PlannedEvent evnt);
+        void Notify(PlannedEvent evnt);
     }
 }

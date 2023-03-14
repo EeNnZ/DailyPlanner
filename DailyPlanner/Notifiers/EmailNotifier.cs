@@ -33,7 +33,7 @@ namespace DailyPlanner.Notifiers
             SmtpUseSsl = GetUseSsl();
         }
 
-        public async Task Notify(PlannedEvent evnt)
+        public void Notify(PlannedEvent evnt)
         {
             string? fromName = System.Reflection.Assembly.GetEntryAssembly()?.GetName()?.Name;
             if (string.IsNullOrEmpty(fromName))
@@ -47,11 +47,11 @@ namespace DailyPlanner.Notifiers
             message.Body = new TextPart(MimeKit.Text.TextFormat.Text) { Text = evnt.Body };
 
             using var client = new SmtpClient();
-            await client.ConnectAsync(SmtpServer, SmtpPort, SmtpUseSsl);
-            await client.AuthenticateAsync(SmtpEmail, SmtpPassword);
-            await client.SendAsync(message);
+            client.ConnectAsync(SmtpServer, SmtpPort, SmtpUseSsl);
+            client.AuthenticateAsync(SmtpEmail, SmtpPassword);
+            client.SendAsync(message);
 
-            await client.DisconnectAsync(true);
+            client.DisconnectAsync(true);
         }
 
         private string GetAddressee()

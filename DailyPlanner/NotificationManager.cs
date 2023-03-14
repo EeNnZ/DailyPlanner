@@ -39,15 +39,15 @@ namespace DailyPlanner
             _winNotifier = new WinNotifier(Configuration);
         }
 
-        public async Task Notify(PlannedEvent evnt)
+        public void Notify(PlannedEvent evnt)
         {
             if (UseEmail)
             {
-                await _emailNotifier.Notify(evnt);
+                _emailNotifier.Notify(evnt);
             }
             if (UseWindows)
             {
-                await _winNotifier.Notify(evnt);
+                _winNotifier.Notify(evnt);
             }
         }
     }

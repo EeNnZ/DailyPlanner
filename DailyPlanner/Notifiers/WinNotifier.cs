@@ -16,7 +16,7 @@ namespace DailyPlanner.Notifiers
         {
             Configuration = configuration;
         }
-        public Task Notify(PlannedEvent evnt)
+        public void Notify(PlannedEvent evnt)
         {
             string toastTitle = $"{evnt.Name} will start at {evnt.EventStartDateTime}";
             string toastBody = evnt.Body ?? string.Empty;
@@ -30,7 +30,6 @@ namespace DailyPlanner.Notifiers
                 .AddButton(new ToastButton().SetContent("Delete event").AddArgument("action", "delete").SetBackgroundActivation())
                 .AddButton(new ToastButton().SetContent("Mark as done").AddArgument("action", "mark")).SetBackgroundActivation();
             toast.Show();
-            return Task.CompletedTask;
         }
     }
 }

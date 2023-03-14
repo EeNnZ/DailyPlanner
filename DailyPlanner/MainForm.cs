@@ -1,8 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Toolkit.Uwp.Notifications;
 using PlannerCore;
-using Windows.Foundation.Collections;
-using Windows.UI.Notifications;
+using System.Runtime.CompilerServices;
 
 namespace DailyPlanner
 {
@@ -30,11 +29,11 @@ namespace DailyPlanner
             string evntName = args["eventName"];
             if (pickedAction == "mark")
             {
-                MarkEventAsDone(evntName);
+                dataGridView.Invoke(() => MarkEventAsDone(evntName));
             }
             else if (pickedAction == "delete")
             {
-                DeleteEvent(evntName);
+                dataGridView.Invoke(() => DeleteEvent(evntName));
             }
         }
 
