@@ -1,5 +1,4 @@
-﻿using DailyPlanner.Notifiers;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Org.BouncyCastle.Crypto.Operators;
 using PlannerCore;
 using System;
@@ -8,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DailyPlanner
+namespace DailyPlanner.Notifiers
 {
     public class NotificationManager : INotifier
     {
@@ -32,7 +31,7 @@ namespace DailyPlanner
                 return bool.TryParse(useWindows, out bool use) && use;
             }
         }
-        public NotificationManager(IConfigurationRoot configuration) 
+        public NotificationManager(IConfigurationRoot configuration)
         {
             Configuration = configuration;
             _emailNotifier = new EmailNotifier(Configuration);

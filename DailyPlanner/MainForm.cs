@@ -1,3 +1,4 @@
+using DailyPlanner.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Toolkit.Uwp.Notifications;
 using PlannerCore;
@@ -11,7 +12,19 @@ namespace DailyPlanner
         public MainForm()
         {
             InitializeComponent();
-
+            bool appSettingsExists = File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json"));
+            if (!appSettingsExists)
+            {
+                var dialogResult = MessageBox.Show("appsettings.json not found. Create it now?", "Error", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    JsonSettingsWriter.CreateAppSettingsJsonFile();
+                }
+                else
+                {
+                    Application.Exit();
+                }
+            }
             using var context = new MainDbContext();
             _eventManager = new EventManager(context.Configuration);
             _eventManager.RecordChanged += EventManager_RecordChanged;
