@@ -2,11 +2,6 @@
 using Microsoft.Extensions.Configuration;
 using MimeKit;
 using PlannerCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DailyPlanner.Notifiers
 {
@@ -14,23 +9,42 @@ namespace DailyPlanner.Notifiers
     {
         #region props
         public readonly IConfigurationRoot Configuration;
-        public string Addressee { get; }
-        public string SmtpEmail { get; private set; }
-        private string SmtpPassword { get; set; }
-        public string SmtpServer { get; private set; }
-        public int SmtpPort { get; private set; }
-        public bool SmtpUseSsl { get; private set; }
+        public string Addressee => GetJsonSection(nameof(Addressee));
+        public string SmtpEmail => GetJsonSection(nameof(SmtpEmail));
+        private string SmtpPassword => GetJsonSection(nameof(SmtpPassword));
+        public string SmtpServer => GetJsonSection(nameof(SmtpServer));
+        public int SmtpPort
+        {
+            get
+            {
+                string? portStr = GetJsonSection(nameof(SmtpPort));
+                try
+                {
+                    return int.Parse(portStr);
+                }
+                catch (ArgumentNullException) { throw; }
+                catch (FormatException) { throw; }
+                catch (OverflowException) { throw; }
+            }
+        }
+        public bool SmtpUseSsl
+        {
+            get
+            {
+                string? useSslStr = GetJsonSection(nameof(SmtpUseSsl));
+                try
+                {
+                    return bool.Parse(useSslStr);
+                }
+                catch (ArgumentNullException) { throw; }
+                catch (FormatException) { throw; }
+            }
+        }
         #endregion
 
         public EmailNotifier(IConfigurationRoot configuration)
         {
             Configuration = configuration;
-            Addressee = GetAddressee();
-            SmtpServer = GetSmtpServer();
-            SmtpEmail = GetSmtpEmail();
-            SmtpPassword = GetSmtpPassword();
-            SmtpPort = GetSmtpPort();
-            SmtpUseSsl = GetUseSsl();
         }
 
         public void Notify(PlannedEvent evnt)
@@ -54,73 +68,15 @@ namespace DailyPlanner.Notifiers
             client.DisconnectAsync(true);
         }
 
-        private string GetAddressee()
+        #region get
+        private string GetJsonSection(string sectionName)
         {
-            string? addressee = Configuration.GetSection("EmailSettings")["Addressee"];
-            if (string.IsNullOrEmpty(addressee))
+            string? value = Configuration.GetSection("EmailSettings")[sectionName];
+            if (string.IsNullOrEmpty(value))
             {
-                throw new NullReferenceException("Cannot obtain addressee email from appsettings.json");
+                throw new NullReferenceException($"Cannot obtain section {sectionName}. Check appsetting.json");
             }
-            return addressee;
-        }
-        #region Obtain smtp settings
-        private string GetSmtpServer()
-        {
-            string? smtp = Configuration.GetSection("EmailSettings")["SmtpServer"];
-            if (string.IsNullOrEmpty(smtp))
-            {
-                throw new NullReferenceException("Cannot obtain smtp server address from appsettings.json");
-            }
-            return smtp;
-        }
-        private bool GetUseSsl()
-        {
-            string? useSslStr = Configuration.GetSection("EmailSettings")["SmtpUseSsl"];
-            if (string.IsNullOrEmpty(useSslStr))
-            {
-                throw new NullReferenceException("Cannot obtain UseSsl from appsettings.json");
-            }
-
-            try
-            {
-                return bool.Parse(useSslStr);
-            }
-            catch (ArgumentNullException) { throw; }
-            catch (FormatException) { throw; }
-        }
-        private int GetSmtpPort()
-        {
-            string? port = Configuration.GetSection("EmailSettings")["SmtpPort"];
-            if (string.IsNullOrEmpty(port))
-            {
-                throw new NullReferenceException("Cannot obtain smtp port from appsettings.json");
-            }
-
-            try
-            {
-                return int.Parse(port);
-            }
-            catch (ArgumentNullException) { throw; }
-            catch (FormatException) { throw; }
-            catch (OverflowException) { throw; }
-        }
-        private string GetSmtpPassword()
-        {
-            string? password = Configuration.GetSection("EmailSettings")["SmtpPassword"];
-            if (string.IsNullOrEmpty(password))
-            {
-                throw new NullReferenceException("Cannot obtain smtp password from appsettings.json");
-            }
-            return password;
-        }
-        private string GetSmtpEmail()
-        {
-            string? email = Configuration.GetSection("EmailSettings")["SmtpEmail"];
-            if (string.IsNullOrEmpty(email))
-            {
-                throw new NullReferenceException("Cannot obtain smtp email from appsettings.json");
-            }
-            return email;
+            return value;
         }
         #endregion
     }

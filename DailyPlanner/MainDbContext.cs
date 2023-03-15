@@ -1,11 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PlannerCore
 {
@@ -34,7 +29,7 @@ namespace PlannerCore
 
         private string GetConnectionString()
         {
-            
+
             string? connectionString = Configuration.GetConnectionString("DefaultConnection");
             if (connectionString is null)
             {
@@ -56,7 +51,7 @@ namespace PlannerCore
         {
             var entries = ChangeTracker
                 .Entries()
-                .Where(e => e.Entity is PlannedEvent 
+                .Where(e => e.Entity is PlannedEvent
                 && (e.State == EntityState.Added
                 || e.State == EntityState.Modified));
 

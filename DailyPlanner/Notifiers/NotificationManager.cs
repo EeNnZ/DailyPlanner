@@ -1,11 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Org.BouncyCastle.Crypto.Operators;
 using PlannerCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DailyPlanner.Notifiers
 {

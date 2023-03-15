@@ -1,11 +1,5 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.Networking.Sockets;
 
 namespace DailyPlanner.Settings
 {
@@ -18,6 +12,7 @@ namespace DailyPlanner.Settings
             string jsonResult = JsonConvert.SerializeObject(jsonSettings, Formatting.Indented);
             if (jsonResult != null)
             {
+                //TODO: Access to output folder is denied
                 using var sw = new StreamWriter(CurrentDirectory, false);
                 sw.WriteLine(jsonResult.ToString());
                 sw.Close();

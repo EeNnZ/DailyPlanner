@@ -2,7 +2,6 @@ using DailyPlanner.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Toolkit.Uwp.Notifications;
 using PlannerCore;
-using System.Runtime.CompilerServices;
 
 namespace DailyPlanner
 {
@@ -15,14 +14,15 @@ namespace DailyPlanner
             bool appSettingsExists = File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json"));
             if (!appSettingsExists)
             {
-                var dialogResult = MessageBox.Show("appsettings.json not found. Create it now?", "Error", MessageBoxButtons.YesNo);
+                var dialogResult = MessageBox.Show("appsettings.json not found. Create it now?", "Error", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (dialogResult == DialogResult.Yes)
                 {
                     JsonSettingsWriter.CreateAppSettingsJsonFile();
                 }
                 else
                 {
-                    Application.Exit();
+
+                    Environment.Exit(-1);
                 }
             }
             using var context = new MainDbContext();
@@ -70,7 +70,7 @@ namespace DailyPlanner
             PlannedEvent? selectedEvent = _eventManager.Read()?.FirstOrDefault(ev => ev.Name == selectedName);
             if (selectedEvent == null)
             {
-                MessageBox.Show("Cannot obtain event with given name", "Error", MessageBoxButtons.OK);
+                MessageBox.Show("Cannot obtain event with given name", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -101,7 +101,7 @@ namespace DailyPlanner
             PlannedEvent? selectedEvent = _eventManager.Read()?.FirstOrDefault(ev => ev.Name == selectedName);
             if (selectedEvent == null)
             {
-                MessageBox.Show("Cannot obtain event with given name", "Error", MessageBoxButtons.OK);
+                MessageBox.Show("Cannot obtain event with given name", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             PlannedEvent updated = new(selectedEvent.Name,
@@ -145,20 +145,20 @@ namespace DailyPlanner
         {
             if (dataGridView.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Select at least 1 row to delete", "Error", MessageBoxButtons.OK);
+                MessageBox.Show("Select at least 1 row to delete", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
             string? selectedName = dataGridView.SelectedRows[0].Cells[1].Value.ToString();
             if (selectedName is null)
             {
-                MessageBox.Show("Cell value is empty", "Error", MessageBoxButtons.OK);
+                MessageBox.Show("Cell value is empty", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             bool deleted = DeleteEvent(selectedName);
             if (!deleted)
             {
-                MessageBox.Show("Cannot find db item with given index", "Error", MessageBoxButtons.OK);
+                MessageBox.Show("Cannot find db item with given index", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -173,7 +173,7 @@ namespace DailyPlanner
         {
             if (dataGridView.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Select at least 1 row to modify", "Error", MessageBoxButtons.OK);
+                MessageBox.Show("Select at least 1 row to modify", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
@@ -192,7 +192,6 @@ namespace DailyPlanner
 
         protected override void OnClosed(EventArgs e)
         {
-            //TODO: Dispose eventManager on form closed?
             base.OnClosed(e);
         }
         #endregion

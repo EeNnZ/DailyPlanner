@@ -1,7 +1,7 @@
 ﻿using DailyPlanner.Notifiers;
 using Microsoft.Extensions.Configuration;
-using System.Timers;
 using PlannerCore;
+using System.Timers;
 
 namespace DailyPlanner
 {
@@ -41,7 +41,7 @@ namespace DailyPlanner
         #region CRUD event 
         public class RecordChangedEventArgs : EventArgs
         {
-            public enum RecordState { Deleted, Updated, Created}
+            public enum RecordState { Deleted, Updated, Created }
             public readonly RecordState _state;
             public RecordChangedEventArgs(RecordState state) => _state = state;
         }
@@ -62,7 +62,6 @@ namespace DailyPlanner
             if (evnt is not null)
             {
                 db.PlannedEvents?.Remove(evnt);
-                //ResetIndices(db);
                 db.SaveChanges();
                 OnRecordChanged(new RecordChangedEventArgs(RecordChangedEventArgs.RecordState.Deleted));
                 return true;
@@ -116,7 +115,7 @@ namespace DailyPlanner
         {
             var newEvent = new PlannedEvent(name, startDateTime, notifyDateTime, body);
             using var db = new MainDbContext();
-            if(db.PlannedEvents?.FirstOrDefault(e => e.Name == newEvent.Name 
+            if (db.PlannedEvents?.FirstOrDefault(e => e.Name == newEvent.Name
             && e.EventStartDateTime == newEvent.EventStartDateTime) is null)
             {
                 db.PlannedEvents?.Add(newEvent);
