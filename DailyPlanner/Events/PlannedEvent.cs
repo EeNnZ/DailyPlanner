@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
-namespace PlannerCore
+namespace DailyPlanner.Events
 {
     [Index(nameof(Name), IsUnique = true)]
     public class PlannedEvent

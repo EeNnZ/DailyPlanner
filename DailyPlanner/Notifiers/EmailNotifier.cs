@@ -1,7 +1,7 @@
-﻿using MailKit.Net.Smtp;
+﻿using DailyPlanner.Events;
+using MailKit.Net.Smtp;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
-using PlannerCore;
 
 namespace DailyPlanner.Notifiers
 {

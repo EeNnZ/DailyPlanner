@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DailyPlanner.Events;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Diagnostics;
 
-namespace PlannerCore
+namespace DailyPlanner.Database
 {
     public class MainDbContext : DbContext
     {

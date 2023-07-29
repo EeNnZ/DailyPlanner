@@ -1,4 +1,4 @@
-﻿using PlannerCore;
+﻿using DailyPlanner.Events;
 
 namespace DailyPlanner.Notifiers
 {

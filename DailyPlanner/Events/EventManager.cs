@@ -1,9 +1,9 @@
 ﻿using DailyPlanner.Notifiers;
 using Microsoft.Extensions.Configuration;
-using PlannerCore;
+using DailyPlanner.Database;
 using System.Timers;
 
-namespace DailyPlanner
+namespace DailyPlanner.Events
 {
     public class EventManager
     {
@@ -16,14 +16,16 @@ namespace DailyPlanner
         {
             Configuration = configuration;
             _notifier = new NotificationManager(Configuration);
+
             using var context = new MainDbContext();
             _localEventsCollection = context.PlannedEvents?.ToList() ?? new List<PlannedEvent>();
+
             _timer = new System.Timers.Timer(5000);
-            _timer.Elapsed += CheckForUpcomingEventsCallback;
+            _timer.Elapsed += CheckForUpcomingEventsTimerCallback;
             _timer.Start();
         }
 
-        private void CheckForUpcomingEventsCallback(object? sender, ElapsedEventArgs e)
+        private void CheckForUpcomingEventsTimerCallback(object? sender, ElapsedEventArgs e)
         {
             if (_localEventsCollection == null || _localEventsCollection.Count == 0) return;
 
@@ -32,6 +34,19 @@ namespace DailyPlanner
             foreach (var evnt in _localEventsCollection)
             {
                 if (now == evnt.NotificationDateTime.ToString(dtformat) && !evnt.IsDone)
+                {
+                    _notifier.Notify(evnt);
+                }
+            }
+        }
+
+        public void CheckForMissedEvents()
+        {
+            if (_localEventsCollection == null || _localEventsCollection.Count == 0) return;
+
+            foreach (var evnt in _localEventsCollection)
+            {
+                if (DateTime.Now > evnt.NotificationDateTime && !evnt.IsDone)
                 {
                     _notifier.Notify(evnt);
                 }

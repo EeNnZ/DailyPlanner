@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using DailyPlanner.Events;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Toolkit.Uwp.Notifications;
-using PlannerCore;
 
 namespace DailyPlanner.Notifiers
 {

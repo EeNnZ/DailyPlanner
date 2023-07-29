@@ -11,13 +11,7 @@ namespace DailyPlanner.Settings
 
         public static void CreateAppSettingsJsonFile()
         {
-            var jsonSettings = new JsonSettings()
-            {
-                MainSettings = new MainSettings()
-                {
-                    RecieveWindowsNotifications = "true"
-                }
-            };
+            var jsonSettings = new JsonSettings();
             string jsonResult = JsonConvert.SerializeObject(jsonSettings, Formatting.Indented);
             if (jsonResult != null)
             {

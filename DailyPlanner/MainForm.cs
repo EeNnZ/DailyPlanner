@@ -1,8 +1,8 @@
+using DailyPlanner.Events;
 using DailyPlanner.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Toolkit.Uwp.Notifications;
-using PlannerCore;
-
+using DailyPlanner.Database;
 namespace DailyPlanner
 {
     public partial class MainForm : Form
@@ -31,6 +31,13 @@ namespace DailyPlanner
 
             LoadDatabaseEntriesToDataGridView();
             dataGridView.Columns["EventId"].Visible = false;
+
+            CheckForMissedEvents();
+        }
+
+        private void CheckForMissedEvents()
+        {
+            _eventManager.CheckForMissedEvents();
         }
 
         private void ToastNotificationManagerCompat_OnActivated(ToastNotificationActivatedEventArgsCompat e)

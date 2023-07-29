@@ -1,5 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
-using PlannerCore;
+﻿using DailyPlanner.Events;
+using Microsoft.Extensions.Configuration;
 
 namespace DailyPlanner.Notifiers
 {
