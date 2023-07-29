@@ -5,17 +5,24 @@ namespace DailyPlanner.Settings
 {
     static class JsonSettingsWriter
     {
+        private static readonly string AppSettingsFileName = "appsettings.json";
+
         public static readonly string CurrentDirectory = Directory.GetCurrentDirectory();
+
         public static void CreateAppSettingsJsonFile()
         {
-            var jsonSettings = new JsonSettings();
+            var jsonSettings = new JsonSettings()
+            {
+                MainSettings = new MainSettings()
+                {
+                    RecieveWindowsNotifications = "true"
+                }
+            };
             string jsonResult = JsonConvert.SerializeObject(jsonSettings, Formatting.Indented);
             if (jsonResult != null)
             {
-                //TODO: Access to output folder is denied
-                using var sw = new StreamWriter(CurrentDirectory, false);
-                sw.WriteLine(jsonResult.ToString());
-                sw.Close();
+                string fullSettingsFileName = Path.Combine(CurrentDirectory, AppSettingsFileName);
+                File.AppendAllText(fullSettingsFileName, jsonResult);
             }
         }
         public static bool CreateAppSettingsJsonFile(string serialized)
